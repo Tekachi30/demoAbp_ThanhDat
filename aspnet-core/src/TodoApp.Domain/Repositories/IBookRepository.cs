@@ -9,7 +9,7 @@ namespace TodoApp.Repositories
     public interface IBookRepository
     {
         Task<List<Book>> GetListAsync();
-        Task<Book> CreateAsync(string text);
+        Task<Book> CreateAsync(string title, string description, string author, double price, int pages);
         Task DeleteAsync(Guid id);
     }   
 }

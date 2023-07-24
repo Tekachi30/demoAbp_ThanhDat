@@ -20,11 +20,4 @@ namespace TodoApp
         Task DeleteUserAsync(Guid id);
 
     }
-
-    public interface IBookService : IApplicationService
-    {
-        Task<List<BookDto>> GetListAsync();
-        Task<BookDto> CreateAsync(string text);
-        Task DeleteAsync(Guid id);
-    }
 }

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TodoApp.Dto;
+using TodoApp.Interfaces;
 using TodoApp.Repositories;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
@@ -12,13 +14,13 @@ using Volo.Abp.Users;
 
 namespace TodoApp.Services
 {
-    public class BookService : TodoAppAppService, IBookService
+    public class BookService : TodoAppAppService
     {
         private readonly ILogger<BookService> _log;
-        private readonly IBookRepository<Book> _bookRepository;
+        private readonly IBookRepository _bookRepository;
 
 
-        public BookService(ILogger<BookService> log, IRepository<Book> bookRepository)
+        public BookService(ILogger<BookService> log, IBookRepository bookRepository)
         {
             _log = log;
             _bookRepository = bookRepository;
@@ -26,7 +28,7 @@ namespace TodoApp.Services
 
         public async Task<List<BookDto>> GetListAsync()
         {
-             try
+            try
             {
                 _log.LogInformation("Đây là danh sách book");
                 var bookList = await _bookRepository.GetListAsync();
@@ -42,17 +44,7 @@ namespace TodoApp.Services
         {
             try
             {
-                var book = new Book
-                {
-                    Title = title,
-                    Description = description,
-                    Author = author,
-                    Price = price,
-                    Pages = pages
-                };
-
-                var createdBook = await _bookRepository.InsertAsync(book);
-
+                var createdBook = await _bookRepository.CreateAsync(title, description, author, price, pages);
                 return ObjectMapper.Map<Book, BookDto>(createdBook);
             }
             catch (Exception ex)
@@ -74,7 +66,4 @@ namespace TodoApp.Services
         }
 
     }
-
-    
-
 }

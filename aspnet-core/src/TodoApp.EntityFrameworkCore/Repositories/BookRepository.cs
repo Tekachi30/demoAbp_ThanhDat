@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+//using TodoApp.Dto;
 using TodoApp.EntityFrameworkCore;
+using TodoApp.Repositories;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
@@ -14,19 +16,20 @@ namespace TodoApp.Repositories
     public class BookRepository : ITransientDependency
     {
         //private readonly ITodoAppDbContext _dbcontext;
-        //public BookRepository(ITodoAppDbContext dbcontext)
-        //{
-        //    _dbcontext = dbcontext;
-        //}
         private readonly IRepository<Book, Guid> _bookRepository;
-
-        public BookRepository(IRepository<Book, Guid> bookRepository) { _bookRepository = bookRepository; }
+        public BookRepository(ITodoAppDbContext dbContext, IRepository<Book, Guid> bookRepository)
+        {
+            //_dbcontext = dbContext;
+            _bookRepository = bookRepository;
+        }
 
         ////Lấy danh sách user
         public async Task<List<Book>> GetListAsync()
         {
             try
             {
+                //var books = await _bookRepository.GetListAsync();
+                //return books.ToList();
                 var books = await _bookRepository.GetListAsync();
                 return books
                     .Select(book => new Book
@@ -47,12 +50,34 @@ namespace TodoApp.Repositories
         }
 
         // Thêm mới sách
-        public async Task<Book> CreateAsync(Book book)
+        public async Task<Book> CreateAsync(string title, string description, string author, double price, int pages)
         {
             try
             {
+                // cách 1:
+                var book = new Book
+                {
+                    Title = title,
+                    Description = description,
+                    Author = author,
+                    Price = price,
+                    Pages = pages
+                };
                 var createdBook = await _bookRepository.InsertAsync(book);
                 return createdBook;
+
+                //cách 2:
+                //var book = await _bookRepository.InsertAsync(
+                //    new Book
+                //    {
+                //        Title = title,
+                //        Description = description,
+                //        Author = author,
+                //        Price = price,
+                //        Pages = pages
+                //    });
+                //return new BookDto { Id = book.Id, Title = book.Title, Description = book.Description, Author = book.Author, Price = book.Price };
+
             }
             catch (Exception ex)
             {
@@ -75,19 +100,4 @@ namespace TodoApp.Repositories
         }
     }
 
-    //// Thêm tên user vào
-    //public async Task<TodoUserDto> CreateUserAsync(string name)
-    //{
-    //    var todoUser = await _userRepository.InsertAsync(
-    //        new TodoUser { UserName = name }
-    //        );
-
-    //    return new TodoUserDto { Id = todoUser.Id, UserName = todoUser.UserName };
-    //}
-
-
-    //public async Task DeleteUserAsync(Guid id)
-    //{
-    //    await _userRepository.DeleteAsync(id);
-    //}
 }
