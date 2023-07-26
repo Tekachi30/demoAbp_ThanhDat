@@ -19,11 +19,11 @@ namespace TodoApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<BookDto>>> GetListAsync()
+        public async Task<ActionResult<List<BookDto>>> GetListBook()
         {
             try
             {
-                var books = await _bookService.GetListAsync();
+                var books = await _bookService.GetListBook();
                 return Ok(books);
             }
             catch (Exception ex)
@@ -33,12 +33,12 @@ namespace TodoApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BookDto>> CreateAsync([FromBody] BookInputDto inputDto)
+        public async Task<ActionResult<BookDto>> CreateBook([FromBody] BookInputDto inputDto)
         {
             try
             {
-                var book = await _bookService.CreateAsync(inputDto.Title, inputDto.Description, inputDto.Author, inputDto.Price, inputDto.Pages);
-                return CreatedAtAction(nameof(GetListAsync), book);
+                var book = await _bookService.CreateBook(inputDto.Title, inputDto.Description, inputDto.Author, inputDto.Price, inputDto.Pages);
+                return CreatedAtAction(nameof(GetListBook), book);
             }
             catch (Exception ex)
             {
@@ -47,11 +47,11 @@ namespace TodoApp.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<BookDto>> DeleteAsync(Guid id)
+        public async Task<ActionResult<BookDto>> DeleteBook(Guid id)
         {
             try
             {
-                await _bookService.DeleteAsync(id);
+                await _bookService.DeleteBook(id);
                 return NoContent();
             }
             catch (Exception ex)

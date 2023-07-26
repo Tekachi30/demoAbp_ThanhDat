@@ -14,7 +14,7 @@ using Volo.Abp.Users;
 
 namespace TodoApp.Services
 {
-    public class BookService : TodoAppAppService
+    public class BookService : TodoAppAppService, IBookService
     {
         private readonly ILogger<BookService> _log;
         private readonly IBookRepository _bookRepository;
@@ -26,7 +26,7 @@ namespace TodoApp.Services
             _bookRepository = bookRepository;
         }
 
-        public async Task<List<BookDto>> GetListAsync()
+        public async Task<List<BookDto>> GetListBook()
         {
             try
             {
@@ -40,7 +40,7 @@ namespace TodoApp.Services
             }
         }
 
-        public async Task<BookDto> CreateAsync(string title, string description, string author, double price, int pages)
+        public async Task<BookDto> CreateBook(string title, string description, string author, double price, int pages)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace TodoApp.Services
             }
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteBook(Guid id)
         {
             try
             {
@@ -65,5 +65,43 @@ namespace TodoApp.Services
             }
         }
 
+        //public async Task<List<BookDto>> GetListAsync()
+        //{
+        //    try
+        //    {
+        //        _log.LogInformation("Đây là danh sách book");
+        //        var bookList = await _bookRepository.GetListAsync();
+        //        return new List<BookDto>(ObjectMapper.Map<List<Book>, List<BookDto>>(bookList));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new UserFriendlyException("Message", ex.Message);
+        //    }
+        //}
+
+        //public async Task<BookDto> CreateAsync(string title, string description, string author, double price, int pages)
+        //{
+        //    try
+        //    {
+        //        var createdBook = await _bookRepository.CreateAsync(title, description, author, price, pages);
+        //        return ObjectMapper.Map<Book, BookDto>(createdBook);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new UserFriendlyException("Message", ex.Message);
+        //    }
+        //}
+
+        //public async Task DeleteAsync(Guid id)
+        //{
+        //    try
+        //    {
+        //        await _bookRepository.DeleteAsync(id);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new UserFriendlyException("Message", ex.Message);
+        //    }
+        //}
     }
 }

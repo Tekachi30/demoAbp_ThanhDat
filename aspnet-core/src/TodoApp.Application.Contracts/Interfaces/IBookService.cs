@@ -9,8 +9,8 @@ namespace TodoApp.Interfaces
 {
     public interface IBookService : IApplicationService
     {
-        Task<List<BookDto>> GetListAsync();
-        Task<BookDto> CreateAsync(string title, string description, string author, double price, int pages);
-        Task<BookDto> DeleteAsync(Guid id);
+        Task<List<BookDto>> GetListBook();
+        Task<BookDto> CreateBook(string title, string description, string author, double price, int pages);
+        Task DeleteBook(Guid id);
     }
 }
